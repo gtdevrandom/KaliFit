@@ -15,6 +15,8 @@
 | `script.js`     | Logique front-end                     |
 | `api.js`        | Gestion des APIs                      |
 | `favicon.ico`   | Icône                                  |
+| `README.md`   | Résumé du projet                                  |
+| `LICENSE`   | License MIT                                  |
 
 ---
 
