@@ -19,7 +19,7 @@
 - 🟢 Sports, allimentation (+IA ?)
 - 🔴 Plaque d'immatriculation/véhicule
 - 🔴 Images
-- 🔴 Cybersécu
+- 🔴 Cybersécurité
 
 ### Légendes
 
