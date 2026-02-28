@@ -1,15 +1,20 @@
 {
-  "short_name": "Vaulta",
-  "name": "Vaulta",
+  "short_name": "KaliFit",
+  "name": "KaliFit",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/2889/2889676.png",
+      "src": "./images/logo-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./images/logo-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#0f172a",
-  "background_color": "#0f172a"
+  "theme_color": "#00c9b1",
+  "background_color": "#f2f2f2"
 }

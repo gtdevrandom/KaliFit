@@ -1,11 +1,229 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site</title>
-</head>
-<body>
-    <p>Site</p>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KaliFit</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="./script.js"></script>
+  </head>
+  <body>
+    <div class="app">
+
+      <header class="app-header">
+        <img src="./images/logo-192.png" alt="KaliFit" class="logo-img">
+        <h1>KaliFit</h1>
+      </header>
+
+      <section id="screen-accueil" class="screen active">
+
+        <div class="card">
+          <div class="card-title">Profil &amp; objectif</div>
+          <div class="data-row">
+            <span class="label">Poids :</span>
+            <span class="value">N/A</span>
+          </div>
+          <div class="data-row">
+            <span class="label">TDEE :</span>
+            <span class="value">N/A</span>
+          </div>
+          <div class="data-row">
+            <span class="label">Objectif :</span>
+            <span class="value">N/A</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Nutrition du jour</div>
+          <div class="progress-container">
+            <div class="progress-label">Protéines</div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:55%"></div></div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-label">Glucides :</div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:70%"></div></div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-label">Lipides :</div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:40%"></div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="score-label">Score de récupération</div>
+          <div class="score-big">N/A</div>
+          <div class="data-row">
+            <span class="label">Sommeil :</span>
+            <span class="value">N/A</span>
+          </div>
+          <div class="data-row">
+            <span class="label">Charge entraînement :</span>
+            <span class="value">N/A</span>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="screen-nutrition" class="screen">
+
+        <div class="card">
+          <div class="card-title">Nutrition du jour</div>
+          <div class="progress-container">
+            <div class="progress-label">Protéines :</div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:55%"></div></div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-label">Glucides :</div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:70%"></div></div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-label">Lipides :</div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:40%"></div></div>
+          </div>
+        </div>
+
+        <button class="btn-teal">+ Ajouter un aliment</button>
+
+        <div class="card">
+          <div class="score-label">Qualité alimentaire</div>
+          <div class="score-big">N/A</div>
+        </div>
+
+        <div class="ia-card">
+          <div class="ia-title">Suggestion IA</div>
+          <div class="ia-text">
+            Augmente tes protéines de 15g<br>
+            Réduit ta consommation de dessert sucré<br>
+            Mange un fruit frais
+          </div>
+        </div>
+
+      </section>
+
+      <section id="screen-sport" class="screen">
+
+        <button class="btn-teal">+ Ajouter une séance</button>
+
+        <div class="card">
+          <div class="score-label">Qualité de la séance</div>
+          <div class="score-big">N/A</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Historique des séances</div>
+          <div style="display:flex;flex-direction:column;gap:7px;margin-top:4px">
+            <div class="session-item">N/A</div>
+          </div>
+        </div>
+
+        <div class="ia-card">
+          <div class="ia-title">Suggestion IA</div>
+          <div class="ia-text">
+            Pour perdre de la masse grasse fait plus de cardio et pour prendre de la masse musculaire fait de la musculation
+          </div>
+        </div>
+
+      </section>
+
+      <section id="screen-stats" class="screen">
+
+        <div class="card">
+          <div class="card-title">Poids &amp; objectif</div>
+          <div class="progress-container">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+              <span class="progress-label" style="margin-bottom:0">Masse grasse :</span>
+              <span style="font-size:13px;font-weight:600">N/A</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0%"></div></div>
+          </div>
+          <div class="progress-container">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+              <span class="progress-label" style="margin-bottom:0">Masse musculaire :</span>
+              <span style="font-size:13px;font-weight:600">N/A</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="score-label">Ratio performance/calories</div>
+          <div class="score-big">N/A</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Heatmap séances</div>
+          <div class="heatmap-grid">
+            <div class="heatmap-cell active"></div>
+            <div class="heatmap-cell active"></div>
+            <div class="heatmap-cell active-mid"></div>
+            <div class="heatmap-cell active"></div>
+            <div class="heatmap-cell inactive"></div>
+            <div class="heatmap-cell active"></div>
+            <div class="heatmap-cell inactive"></div>
+          </div>
+        </div>
+
+        <div class="ia-card">
+          <div class="ia-title">Conseil IA</div>
+          <div class="ia-text">Tu te rapproches de ton objectif, continus ainsi</div>
+        </div>
+
+      </section>
+
+      <section id="screen-profil" class="screen">
+
+        <div class="card">
+          <div class="card-title">Objectifs :</div>
+          <div class="data-row">
+            <span class="label">Masse grasse :</span>
+            <span class="value">N/A</span>
+          </div>
+          <div class="data-row">
+            <span class="label">Masse musculaire :</span>
+            <span class="value">N/A</span>
+          </div>
+          <div class="data-row">
+            <span class="label">Poids :</span>
+            <span class="value">N/A</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="score-label">Objectif</div>
+          <div class="obj-percent">N/A</div>
+        </div>
+
+        <button class="btn-teal">+ Ajouter le temps de sommeil</button>
+        <button class="btn-teal">+ Ajouter mon poids</button>
+        <button class="btn-teal">Modifier l'objectif</button>
+
+        <button class="btn-params">Paramètres</button>
+
+      </section>
+
+      <nav class="bottom-nav">
+        <div class="nav-item active" data-screen="screen-accueil">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Accueil</span>
+        </div>
+        <div class="nav-item" data-screen="screen-nutrition">
+          <span class="nav-icon">🍎</span>
+          <span class="nav-label">Nutrition</span>
+        </div>
+        <div class="nav-item" data-screen="screen-sport">
+          <span class="nav-icon">🏆</span>
+          <span class="nav-label">Sport</span>
+        </div>
+        <div class="nav-item" data-screen="screen-stats">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Stats</span>
+        </div>
+        <div class="nav-item" data-screen="screen-profil">
+          <span class="nav-icon">👤</span>
+          <span class="nav-label">Profil</span>
+        </div>
+      </nav>
+
+    </div>
+  </body>
 </html>

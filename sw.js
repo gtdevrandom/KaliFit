@@ -1,11 +1,12 @@
-const CACHE_NAME = 'vaulta-v2'; // Changé v1 -> v2
+const CACHE_NAME = 'kalifi-v1';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
-  './app.js',
-  './crypto.js',
-  './manifest.json'
+  './script.js',
+  './manifest.json',
+  './images/logo-192.png',
+  './images/logo-512.png'
 ];
 
 self.addEventListener('install', (e) => {
