@@ -59,7 +59,7 @@
         <div class="card">
           <div class="card-title">Nutrition du jour</div>
           <div class="progress-container">
-            <div class="progress-label">Protéines</div>
+            <div class="progress-label">Protéines :</div>
             <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:55%"></div></div>
           </div>
           <div class="progress-container">
@@ -191,8 +191,8 @@
         </div>
 
         <div class="ia-card">
-          <div class="ia-title">Conseil IA</div>
-          <div class="ia-text">Tu te rapproches de ton objectif, continus ainsi</div>
+          <div class="ia-title">Suggestion IA</div>
+          <div class="ia-text">Tu te rapproches de ton objectif, continue ainsi</div>
         </div>
 
       </section>
@@ -286,7 +286,7 @@
           </div>
           <div class="form-group">
             <label>Format des dates :</label>
-            <select id="settings-date-format" style="width:100%;padding:10px 12px;font-size:14px;border:1px solid #d0d0d0;border-radius:8px;font-family:inherit;">
+            <select id="settings-date-format" name="date-format" style="width:100%;padding:10px 12px;font-size:14px;border:1px solid #d0d0d0;border-radius:8px;font-family:inherit;">
               <option value="fr">JJ/MM/YYYY (ex: 28/02/2026)</option>
               <option value="us">MM/DD/YYYY (ex: 02/28/2026)</option>
               <option value="iso">YYYY-MM-DD (ex: 2026-02-28)</option>
@@ -324,7 +324,6 @@
         </div>
       </nav>
 
-      <!-- Goal Form Modal -->
       <div id="goal-form-modal" class="modal">
         <div class="modal-content modal-form">
           <div class="modal-header">
@@ -374,7 +373,6 @@
         </div>
       </div>
 
-      <!-- Weight Chart Modal -->
       <div id="weight-modal" class="modal">
         <div class="modal-content">
           <div class="modal-header">
@@ -389,7 +387,6 @@
         </div>
       </div>
 
-      <!-- Sleep Chart Modal -->
       <div id="sleep-modal" class="modal">
         <div class="modal-content">
           <div class="modal-header">
@@ -405,7 +402,6 @@
         </div>
       </div>
 
-      <!-- Weight Form Modal -->
       <div id="weight-form-modal" class="modal">
         <div class="modal-content modal-form">
           <div class="modal-header">
@@ -415,18 +411,17 @@
           <div class="modal-body">
             <div class="form-group">
               <label>Date :</label>
-              <input type="date" id="weight-date" />
+              <input type="date" id="weight-date" name="weight-date" />
             </div>
             <div class="form-group">
               <label>Poids (kg) :</label>
-              <input type="number" id="weight-value" placeholder="75.5" step="0.1" />
+              <input type="number" id="weight-value" name="weight-value" placeholder="75.5" step="0.1" />
             </div>
             <button class="btn-teal" onclick="saveWeight()">Enregistrer</button>
           </div>
         </div>
       </div>
 
-      <!-- Sleep Form Modal -->
       <div id="sleep-form-modal" class="modal">
         <div class="modal-content modal-form">
           <div class="modal-header">
@@ -436,17 +431,17 @@
           <div class="modal-body">
             <div class="form-group">
               <label>Date :</label>
-              <input type="date" id="sleep-date" />
+              <input type="date" id="sleep-date" name="sleep-date" />
             </div>
             <div class="form-group">
               <label>Durée :</label>
               <div style="display:flex;gap:8px;align-items:center;">
                 <div style="flex:1;">
-                  <input type="number" id="sleep-hours" placeholder="7" min="0" max="23" style="width:100%;" />
+                  <input type="number" id="sleep-hours" name="sleep-hours" placeholder="7" min="0" max="23" style="width:100%;" />
                   <small style="font-size:11px;opacity:0.7;">heures</small>
                 </div>
                 <div style="flex:1;">
-                  <input type="number" id="sleep-minutes" placeholder="30" min="0" max="59" style="width:100%;" />
+                  <input type="number" id="sleep-minutes" name="sleep-minutes" placeholder="30" min="0" max="59" style="width:100%;" />
                   <small style="font-size:11px;opacity:0.7;">minutes</small>
                 </div>
               </div>
