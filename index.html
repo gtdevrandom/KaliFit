@@ -25,18 +25,34 @@
       <section id="screen-accueil" class="screen active">
 
         <div class="card">
-          <div class="card-title">Profil &amp; objectif</div>
+          <div class="card-title">Profil</div>
           <div class="data-row">
             <span class="label">Poids :</span>
-            <span class="value">N/A</span>
+            <span class="value" id="home-weight">N/A</span>
           </div>
           <div class="data-row">
-            <span class="label">TDEE :</span>
-            <span class="value">N/A</span>
+            <span class="label">IMC :</span>
+            <span class="value" id="home-bmi">N/A</span>
           </div>
-          <div class="data-row">
-            <span class="label">Objectif :</span>
-            <span class="value">N/A</span>
+          <div class="imc-bar-container">
+            <div class="imc-bar">
+              <div class="imc-zone imc-underweight"></div>
+              <div class="imc-zone imc-normal"></div>
+              <div class="imc-zone imc-overweight"></div>
+              <div class="imc-zone imc-obese-moderate"></div>
+              <div class="imc-zone imc-obese-severe"></div>
+            </div>
+            <div class="imc-pointer" id="imc-pointer" style="left: 0%"></div>
+            <div class="imc-category-labels">
+              <span>Maigreur</span>
+              <span>Normal</span>
+              <span>Surpoids</span>
+              <span>Obésité modérée</span>
+              <span>Obésité sévère</span>
+            </div>
+            <div class="imc-range-labels">
+              <span>&lt;18.5</span><span>18.5-25</span><span>25-30</span><span>30-35</span><span>&gt;35</span>
+            </div>
           </div>
         </div>
 
@@ -58,10 +74,10 @@
 
         <div class="card">
           <div class="score-label">Score de récupération</div>
-          <div class="score-big">N/A</div>
+          <div class="score-big" id="home-sleep">N/A</div>
           <div class="data-row">
             <span class="label">Sommeil :</span>
-            <span class="value">N/A</span>
+            <span class="value" id="home-sleep-text">N/A</span>
           </div>
           <div class="data-row">
             <span class="label">Charge entraînement :</span>
@@ -134,6 +150,10 @@
 
       <section id="screen-stats" class="screen">
 
+        <button class="btn-teal" onclick="openWeightChart()">📈 Graphique du poids</button>
+
+        <button class="btn-teal" onclick="openSleepChart()">😴 Graphique du sommeil</button>
+
         <div class="card">
           <div class="card-title">Poids &amp; objectif</div>
           <div class="progress-container">
@@ -182,29 +202,98 @@
         <div class="card">
           <div class="card-title">Objectifs :</div>
           <div class="data-row">
+            <span class="label">Poids :</span>
+            <span class="value" id="goal-weight-obj">N/A</span>
+          </div>
+          <div class="data-row">
             <span class="label">Masse grasse :</span>
-            <span class="value">N/A</span>
+            <span class="value" id="goal-fat-obj">N/A</span>
           </div>
           <div class="data-row">
             <span class="label">Masse musculaire :</span>
-            <span class="value">N/A</span>
-          </div>
-          <div class="data-row">
-            <span class="label">Poids :</span>
-            <span class="value">N/A</span>
+            <span class="value" id="goal-muscle-obj">N/A</span>
           </div>
         </div>
 
         <div class="card">
-          <div class="score-label">Objectif</div>
-          <div class="obj-percent">N/A</div>
+          <div class="card-title">Progression :</div>
+          <div class="progress-container">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+              <span class="progress-label" style="margin-bottom:0">Poids :</span>
+              <span style="font-size:13px;font-weight:600" id="goal-weight-display">N/A</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="goal-weight-bar" style="width:0%"></div></div>
+          </div>
+          <div class="progress-container">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+              <span class="progress-label" style="margin-bottom:0">Masse grasse :</span>
+              <span style="font-size:13px;font-weight:600" id="goal-fat-display">N/A</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="goal-fat-bar" style="width:0%"></div></div>
+          </div>
+          <div class="progress-container">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+              <span class="progress-label" style="margin-bottom:0">Masse musculaire :</span>
+              <span style="font-size:13px;font-weight:600" id="goal-muscle-display">N/A</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="goal-muscle-bar" style="width:0%"></div></div>
+          </div>
         </div>
 
-        <button class="btn-teal">+ Ajouter le temps de sommeil</button>
-        <button class="btn-teal">+ Ajouter mon poids</button>
-        <button class="btn-teal">Modifier l'objectif</button>
+        <button class="btn-teal" onclick="openGoalForm()">+ Modifier l'objectif</button>
+        <button class="btn-teal" onclick="openWeightForm()">+ Ajouter mon poids</button>
+        <button class="btn-teal" onclick="openSleepForm()">+ Ajouter le temps de sommeil</button>
 
-        <button class="btn-params">Paramètres</button>
+      </section>
+
+      <section id="screen-settings" class="screen">
+
+        <div class="card">
+          <div class="card-title">Informations personnelles</div>
+          <div class="form-group" style="margin-bottom:12px;">
+            <label>Prénom :</label>
+            <input type="text" id="settings-firstname" placeholder="Jean" />
+          </div>
+          <div class="form-group" style="margin-bottom:12px;">
+            <label>Nom :</label>
+            <input type="text" id="settings-lastname" placeholder="Dupont" />
+          </div>
+          <div class="form-group" style="margin-bottom:12px;">
+            <label>Taille (cm) :</label>
+            <input type="number" id="settings-height" placeholder="180" min="0" />
+          </div>
+          <div class="form-group" style="margin-bottom:12px;">
+            <label>Année de naissance :</label>
+            <input type="number" id="settings-birth-year" placeholder="1990" min="1900" max="2099" />
+          </div>
+          <button class="btn-teal" onclick="saveSettings()">Enregistrer</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Préférences</div>
+          <div class="form-group" style="margin-bottom:12px;">
+            <label>Thème :</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="theme" value="light" />
+                <span>Clair</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="theme" value="dark" />
+                <span>Sombre</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Format des dates :</label>
+            <select id="settings-date-format" style="width:100%;padding:10px 12px;font-size:14px;border:1px solid #d0d0d0;border-radius:8px;font-family:inherit;">
+              <option value="fr">JJ/MM/YYYY (ex: 28/02/2026)</option>
+              <option value="us">MM/DD/YYYY (ex: 02/28/2026)</option>
+              <option value="iso">YYYY-MM-DD (ex: 2026-02-28)</option>
+            </select>
+          </div>
+          <button class="btn-teal" onclick="savePreferences()">Enregistrer</button>
+        </div>
 
       </section>
 
@@ -229,7 +318,143 @@
           <span class="nav-icon">👤</span>
           <span class="nav-label">Profil</span>
         </div>
+        <div class="nav-item" data-screen="screen-settings">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Param</span>
+        </div>
       </nav>
+
+      <!-- Goal Form Modal -->
+      <div id="goal-form-modal" class="modal">
+        <div class="modal-content modal-form">
+          <div class="modal-header">
+            <h2>Modifier les objectifs</h2>
+            <button class="modal-close" onclick="closeGoalForm()">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Poids actuel (kg) :</label>
+              <input type="number" id="goal-weight-start" placeholder="80" step="0.1" />
+            </div>
+            <div class="form-group">
+              <label>Masse grasse actuelle (%) :</label>
+              <input type="number" id="goal-fat-start" placeholder="20" step="0.1" min="0" max="100" />
+            </div>
+            <div class="form-group">
+              <label>Masse musculaire actuelle (kg) :</label>
+              <input type="number" id="goal-muscle-start" placeholder="55" step="0.1" />
+            </div>
+            <div class="form-group">
+              <label>Objectif poids :</label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="weight-goal" value="lose" />
+                  <span>Perdre du poids</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="weight-goal" value="gain" />
+                  <span>Prendre du poids</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Poids objectif (kg) :</label>
+              <input type="number" id="goal-weight-input" placeholder="75" step="0.1" />
+            </div>
+            <div class="form-group">
+              <label>Masse grasse objectif (%) :</label>
+              <input type="number" id="goal-fat-input" placeholder="15" step="0.1" min="0" max="100" />
+            </div>
+            <div class="form-group">
+              <label>Masse musculaire objectif (kg) :</label>
+              <input type="number" id="goal-muscle-input" placeholder="60" step="0.1" />
+            </div>
+            <button class="btn-teal" onclick="saveGoals()">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weight Chart Modal -->
+      <div id="weight-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Graphique du poids</h2>
+            <button class="modal-close" onclick="closeWeightChart()">✕</button>
+          </div>
+          <div class="modal-body">
+            <button class="btn-teal" onclick="openWeightForm()" style="margin-bottom:12px;">+ Ajouter un poids</button>
+            <canvas id="weight-chart"></canvas>
+            <div id="weight-list" style="margin-top:12px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sleep Chart Modal -->
+      <div id="sleep-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Graphique du sommeil</h2>
+            <button class="modal-close" onclick="closeSleepChart()">✕</button>
+          </div>
+          <div class="modal-body">
+            <button class="btn-teal" onclick="openSleepForm()" style="margin-bottom:12px;">+ Ajouter un sommeil</button>
+            <div id="sleep-average" class="average-box"></div>
+            <canvas id="sleep-chart"></canvas>
+            <div id="sleep-list" style="margin-top:12px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weight Form Modal -->
+      <div id="weight-form-modal" class="modal">
+        <div class="modal-content modal-form">
+          <div class="modal-header">
+            <h2>Ajouter un poids</h2>
+            <button class="modal-close" onclick="closeWeightForm()">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Date :</label>
+              <input type="date" id="weight-date" />
+            </div>
+            <div class="form-group">
+              <label>Poids (kg) :</label>
+              <input type="number" id="weight-value" placeholder="75.5" step="0.1" />
+            </div>
+            <button class="btn-teal" onclick="saveWeight()">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sleep Form Modal -->
+      <div id="sleep-form-modal" class="modal">
+        <div class="modal-content modal-form">
+          <div class="modal-header">
+            <h2>Ajouter un temps de sommeil</h2>
+            <button class="modal-close" onclick="closeSleepForm()">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Date :</label>
+              <input type="date" id="sleep-date" />
+            </div>
+            <div class="form-group">
+              <label>Durée :</label>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <div style="flex:1;">
+                  <input type="number" id="sleep-hours" placeholder="7" min="0" max="23" style="width:100%;" />
+                  <small style="font-size:11px;opacity:0.7;">heures</small>
+                </div>
+                <div style="flex:1;">
+                  <input type="number" id="sleep-minutes" placeholder="30" min="0" max="59" style="width:100%;" />
+                  <small style="font-size:11px;opacity:0.7;">minutes</small>
+                </div>
+              </div>
+            </div>
+            <button class="btn-teal" onclick="saveSleep()">Enregistrer</button>
+          </div>
+        </div>
+      </div>
 
     </div>
   </body>
