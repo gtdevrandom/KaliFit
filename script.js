@@ -387,6 +387,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 100);
           } else if (target === 'screen-accueil') {
             setTimeout(() => displayHomeScreen(), 100);
+          } else if (target === 'screen-nutrition') {
+            setTimeout(() => {
+              displayFoodsList();
+              updateNutritionDisplay();
+            }, 100);
           }
         } else {
           s.classList.remove('active');
@@ -409,6 +414,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Load goals on startup
   displayGoals();
   displayHomeScreen();
+  initNutrition();
   
   // Apply theme on startup
   const settings = getSettings();
@@ -600,4 +606,246 @@ function displayHomeScreen() {
     document.getElementById('home-sleep').textContent = 'N/A';
     document.getElementById('home-sleep-text').textContent = 'N/A';
   }
+}
+
+// Nutrition functions - Open Food Facts API
+const getNutritionData = () => storage.get('nutritionData', {});
+const getTodayFoods = () => {
+  const today = new Date().toISOString().split('T')[0];
+  const data = getNutritionData();
+  return data[today] || [];
+};
+
+let currentFoodData = null;
+let foodSearchResults = [];
+
+function openFoodSearchModal() {
+  modal.open('food-search-modal');
+  document.getElementById('food-search-input').value = '';
+  document.getElementById('food-search-results').innerHTML = '';
+  foodSearchResults = [];
+}
+
+function closeFoodSearchModal() {
+  modal.close('food-search-modal');
+}
+
+function closeFoodDetailsModal() {
+  modal.close('food-details-modal');
+  currentFoodData = null;
+}
+
+async function searchFoods() {
+  const query = document.getElementById('food-search-input').value.trim();
+  if (!query) {
+    alert('Veuillez entrer un terme de recherche');
+    return;
+  }
+
+  const resultsDiv = document.getElementById('food-search-results');
+  resultsDiv.innerHTML = '<div style="text-align:center;padding:20px;opacity:0.7;">Recherche en cours...</div>';
+
+  try {
+    const response = await fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1`);
+    const data = await response.json();
+
+    if (!data.products || data.products.length === 0) {
+      resultsDiv.innerHTML = '<div style="text-align:center;padding:20px;opacity:0.6;">Aucun aliment trouvé</div>';
+      return;
+    }
+
+    foodSearchResults = data.products.filter(p => p.nutriments && (p.nutriments.energy_kcal || p.nutriments.energy_100g));
+    
+    if (foodSearchResults.length === 0) {
+      resultsDiv.innerHTML = '<div style="text-align:center;padding:20px;opacity:0.6;">Aucun aliment avec données nutritionnelles</div>';
+      return;
+    }
+
+    resultsDiv.innerHTML = foodSearchResults.slice(0, 10).map((product, idx) => `
+      <div style="padding:10px;border:1px solid #ddd;border-radius:6px;cursor:pointer;transition:background 0.2s;" onclick="selectFoodByIndex(${idx})" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='white'">
+        <div style="font-weight:600;margin-bottom:4px;">${product.product_name || 'Produit sans nom'}</div>
+        <div style="font-size:12px;opacity:0.7;">Marque: ${product.brands || 'Non spécifiée'}</div>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Erreur API Open Food Facts:', error);
+    resultsDiv.innerHTML = '<div style="text-align:center;padding:20px;color:#ff6b6b;">Erreur lors de la recherche. Vérifiez votre connexion.</div>';
+  }
+}
+
+function selectFoodByIndex(idx) {
+  if (idx >= 0 && idx < foodSearchResults.length) {
+    selectFood(foodSearchResults[idx]);
+  }
+}
+
+function selectFood(product) {
+  currentFoodData = product;
+  
+  const nutriments = product.nutriments || {};
+  const calories = nutriments.energy_kcal || (nutriments.energy_100g ? nutriments.energy_100g / 100 : 0);
+  const proteins = nutriments.proteins_100g || 0;
+  const carbs = nutriments.carbohydrates_100g || 0;
+  const fats = nutriments.fat_100g || 0;
+
+  const detailsContent = document.getElementById('food-details-content');
+  detailsContent.innerHTML = `
+    <div style="padding:8px;background:#f0f0f0;border-radius:6px;">
+      <div style="font-weight:600;margin-bottom:8px;">${product.product_name || 'Produit'}</div>
+      <div style="font-size:13px;margin-bottom:8px;">Marque: ${product.brands || 'Non spécifiée'}</div>
+      <div style="border-top:1px solid #ddd;padding-top:8px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div><span style="opacity:0.7;">Calories (100g):</span> <strong>${calories.toFixed(1)} kcal</strong></div>
+          <div><span style="opacity:0.7;">Protéines (100g):</span> <strong>${proteins.toFixed(1)}g</strong></div>
+          <div><span style="opacity:0.7;">Glucides (100g):</span> <strong>${carbs.toFixed(1)}g</strong></div>
+          <div><span style="opacity:0.7;">Lipides (100g):</span> <strong>${fats.toFixed(1)}g</strong></div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('food-details-title').textContent = product.product_name || 'Détails de l\'aliment';
+  document.getElementById('food-quantity-input').value = '100';
+  modal.close('food-search-modal');
+  modal.open('food-details-modal');
+}
+
+function addFoodToDay() {
+  if (!currentFoodData) {
+    alert('Veuillez sélectionner un aliment');
+    return;
+  }
+
+  const quantity = parseFloat(document.getElementById('food-quantity-input').value);
+  if (isNaN(quantity) || quantity <= 0) {
+    alert('Veuillez entrer une quantité valide');
+    return;
+  }
+
+  const today = new Date().toISOString().split('T')[0];
+  const nutritionData = getNutritionData();
+  if (!nutritionData[today]) nutritionData[today] = [];
+
+  const nutriments = currentFoodData.nutriments || {};
+  const calories = (nutriments.energy_kcal || (nutriments.energy_100g ? nutriments.energy_100g / 100 : 0)) * (quantity / 100);
+  const proteins = (nutriments.proteins_100g || 0) * (quantity / 100);
+  const carbs = (nutriments.carbohydrates_100g || 0) * (quantity / 100);
+  const fats = (nutriments.fat_100g || 0) * (quantity / 100);
+
+  const foodItem = {
+    id: Date.now(),
+    name: currentFoodData.product_name || 'Produit',
+    quantity: quantity,
+    calories: calories,
+    proteins: proteins,
+    carbs: carbs,
+    fats: fats,
+    timestamp: new Date().toISOString()
+  };
+
+  nutritionData[today].push(foodItem);
+  storage.set('nutritionData', nutritionData);
+  
+  closeFoodDetailsModal();
+  displayFoodsList();
+  updateNutritionDisplay();
+}
+
+function displayFoodsList() {
+  const foods = getTodayFoods();
+  const foodsList = document.getElementById('foods-list');
+  
+  if (foods.length === 0) {
+    foodsList.innerHTML = '<div style="text-align:center;opacity:0.6;">Aucun aliment ajouté</div>';
+    return;
+  }
+
+  foodsList.innerHTML = foods.map((food, idx) => `
+    <div style="padding:8px;border:1px solid #ddd;border-radius:6px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-weight:600;">${food.name}</div>
+        <div style="font-size:12px;opacity:0.7;">${food.quantity}g | ${food.calories.toFixed(0)} kcal</div>
+      </div>
+      <button style="background:#ff6b6b;color:white;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px;" onclick="removeFoodFromDay(${idx})">Supprimer</button>
+    </div>
+  `).join('');
+}
+
+function removeFoodFromDay(index) {
+  const today = new Date().toISOString().split('T')[0];
+  const nutritionData = getNutritionData();
+  
+  if (nutritionData[today]) {
+    nutritionData[today].splice(index, 1);
+    storage.set('nutritionData', nutritionData);
+    displayFoodsList();
+    updateNutritionDisplay();
+  }
+}
+
+function calculateDailyNeeds() {
+  const settings = getSettings();
+  const weightData = getWeightData();
+  const currentWeight = weightData.length > 0 ? weightData[weightData.length - 1].value : null;
+  const height = settings.height ? parseInt(settings.height) : null;
+  const birthYear = settings.birthYear ? parseInt(settings.birthYear) : null;
+
+  if (!currentWeight || !height) {
+    return {
+      calories: 2500,
+      proteins: 150,
+      carbs: 300,
+      fats: 100
+    };
+  }
+
+  const age = birthYear ? new Date().getFullYear() - birthYear : 30;
+  let calories;
+  
+  const bmr = 88.362 + (13.397 * currentWeight) + (4.799 * height) - (5.677 * age);
+  calories = Math.round(bmr * 1.5); 
+  const proteins = Math.round(currentWeight * 1.8);
+  const carbs = Math.round(currentWeight * 5);
+  const fats = Math.round(currentWeight * 1);
+
+  return {
+    calories: Math.max(calories, 1500),
+    proteins: proteins,
+    carbs: carbs,
+    fats: fats
+  };
+}
+
+function updateNutritionDisplay() {
+  const foods = getTodayFoods();
+  
+  const totals = {
+    calories: 0,
+    proteins: 0,
+    carbs: 0,
+    fats: 0
+  };
+
+  foods.forEach(food => {
+    totals.calories += food.calories;
+    totals.proteins += food.proteins;
+    totals.carbs += food.carbs;
+    totals.fats += food.fats;
+  });
+
+  const needs = calculateDailyNeeds();
+
+  document.getElementById('nutrition-calories-text').textContent = totals.calories.toFixed(0) + ' / ' + needs.calories + ' kcal';
+  document.getElementById('nutrition-protein-text').textContent = totals.proteins.toFixed(1) + ' / ' + needs.proteins + 'g';
+  document.getElementById('nutrition-carbs-text').textContent = totals.carbs.toFixed(1) + ' / ' + needs.carbs + 'g';
+  document.getElementById('nutrition-fat-text').textContent = totals.fats.toFixed(1) + ' / ' + needs.fats + 'g';
+
+  document.getElementById('nutrition-protein-bar').style.width = Math.min((totals.proteins / needs.proteins) * 100, 100) + '%';
+  document.getElementById('nutrition-carbs-bar').style.width = Math.min((totals.carbs / needs.carbs) * 100, 100) + '%';
+  document.getElementById('nutrition-fat-bar').style.width = Math.min((totals.fats / needs.fats) * 100, 100) + '%';
+}
+
+function initNutrition() {
+  displayFoodsList();
+  updateNutritionDisplay();
 }

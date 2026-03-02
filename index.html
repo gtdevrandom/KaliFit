@@ -93,19 +93,33 @@
           <div class="card-title">Nutrition du jour</div>
           <div class="progress-container">
             <div class="progress-label">Protéines :</div>
-            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:55%"></div></div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="nutrition-protein-bar" style="width:0%"></div></div>
+            <span id="nutrition-protein-text" style="font-size:12px;margin-top:4px;">0g</span>
           </div>
           <div class="progress-container">
             <div class="progress-label">Glucides :</div>
-            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:70%"></div></div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="nutrition-carbs-bar" style="width:0%"></div></div>
+            <span id="nutrition-carbs-text" style="font-size:12px;margin-top:4px;">0g</span>
           </div>
           <div class="progress-container">
             <div class="progress-label">Lipides :</div>
-            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:40%"></div></div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="nutrition-fat-bar" style="width:0%"></div></div>
+            <span id="nutrition-fat-text" style="font-size:12px;margin-top:4px;">0g</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-label">Calories :</div>
+            <span id="nutrition-calories-text" style="font-size:12px;margin-top:4px;">0 kcal</span>
           </div>
         </div>
 
-        <button class="btn-teal">+ Ajouter un aliment</button>
+        <button class="btn-teal" onclick="openFoodSearchModal()">+ Ajouter un aliment</button>
+
+        <div class="card">
+          <div class="card-title">Aliments du jour</div>
+          <div id="foods-list" style="display:flex;flex-direction:column;gap:7px;margin-top:4px">
+            <div style="text-align:center;opacity:0.6;">Aucun aliment ajouté</div>
+          </div>
+        </div>
 
         <div class="card">
           <div class="score-label">Qualité alimentaire</div>
@@ -121,7 +135,7 @@
           </div>
         </div>
 
-      </section>
+      </section> 
 
       <section id="screen-sport" class="screen">
 
@@ -447,6 +461,40 @@
               </div>
             </div>
             <button class="btn-teal" onclick="saveSleep()">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="food-search-modal" class="modal">
+        <div class="modal-content modal-form">
+          <div class="modal-header">
+            <h2>Ajouter un aliment</h2>
+            <button class="modal-close" onclick="closeFoodSearchModal()">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Rechercher un aliment :</label>
+              <input type="text" id="food-search-input" placeholder="Ex: pomme, poulet, riz..." />
+            </div>
+            <button class="btn-teal" onclick="searchFoods()" style="margin-bottom:12px;">Rechercher</button>
+            <div id="food-search-results" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="food-details-modal" class="modal">
+        <div class="modal-content modal-form">
+          <div class="modal-header">
+            <h2 id="food-details-title">Détails de l'aliment</h2>
+            <button class="modal-close" onclick="closeFoodDetailsModal()">✕</button>
+          </div>
+          <div class="modal-body">
+            <div id="food-details-content" style="display:flex;flex-direction:column;gap:8px;"></div>
+            <div class="form-group">
+              <label>Quantité (g) :</label>
+              <input type="number" id="food-quantity-input" placeholder="100" min="1" step="1" />
+            </div>
+            <button class="btn-teal" onclick="addFoodToDay()">Ajouter</button>
           </div>
         </div>
       </div>
