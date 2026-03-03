@@ -23,6 +23,29 @@ const THEMES = {
   }
 };
 
+//a delete dans le futur
+async function clearSiteCache() {
+
+  // Supprimer les caches (Service Worker)
+  if ('caches' in window) {
+    const cacheNames = await caches.keys();
+    await Promise.all(
+      cacheNames.map(cacheName => caches.delete(cacheName))
+    );
+  }
+
+  // Supprimer le localStorage
+  localStorage.clear();
+
+  // Supprimer le sessionStorage
+  sessionStorage.clear();
+
+  alert("Cache vidé ! La page va se recharger.");
+
+  // Rechargement forcé
+  window.location.reload(true);
+}
+
 // Get/Set helpers
 const getWeightData = () => storage.get('weightData', []);
 const getSleepData = () => storage.get('sleepData', []);
