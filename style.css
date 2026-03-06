@@ -322,7 +322,7 @@ body {
 }
 
 .heatmap-cell.active { background: var(--primary-color); }
-.heatmap-cell.active-mid { background: #33c9b1; opacity: 0.75; }
+.heatmap-cell.active-mid { background: #D400FF; opacity: 0.75; }
 .heatmap-cell.inactive { background: #d0d0d0; }
 
 .bottom-nav {
@@ -361,14 +361,14 @@ body {
 }
 
 .nav-item.active .nav-label {
-  color: #00c9b1;
+  color: #D400FF;
   font-weight: 700;
 }
 
 .obj-percent {
   font-size: 48px;
   font-weight: 700;
-  color: #00c9b1;
+  color: #D400FF;
   text-align: center;
   padding: 16px 0;
   flex: 1;
@@ -378,7 +378,7 @@ body {
 }
 
 .btn-params {
-  background: #00c9b1;
+  background: #D400FF;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -390,7 +390,6 @@ body {
   text-align: center;
 }
 
-/* Modal Styles */
 .modal {
   display: none;
   position: fixed;
@@ -497,7 +496,7 @@ body {
 
 .form-group input:focus {
   outline: none;
-  border-color: #00c9b1;
+  border-color: #D400FF;
   box-shadow: 0 0 0 3px rgba(0, 201, 177, 0.2);
 }
 
@@ -519,7 +518,7 @@ body {
 .radio-label input[type="radio"] {
   width: auto;
   cursor: pointer;
-  accent-color: #00c9b1;
+  accent-color: #D400FF;
 }
 
 .radio-label span {
@@ -534,7 +533,7 @@ body {
 }
 
 .data-item {
-  background: rgba(0, 201, 177, 0.1);
+  background: rgba(212, 0, 255, 0.1);
   border-radius: 8px;
   padding: 10px 12px;
   margin-bottom: 8px;
@@ -542,7 +541,7 @@ body {
   justify-content: space-between;
   align-items: center;
   font-size: 13px;
-  border: 1px solid rgba(0, 201, 177, 0.2);
+  border: 1px solid rgba(212, 0, 255, 0.2);
 }
 
 .data-item .date {
@@ -551,7 +550,7 @@ body {
 }
 
 .data-item .value {
-  color: #00c9b1;
+  color: #D400FF;
   font-weight: 700;
 }
 
@@ -563,8 +562,8 @@ body {
 }
 
 .avg-stat {
-  background: rgba(0, 201, 177, 0.1);
-  border-left: 4px solid #00c9b1;
+  background: rgba(212, 0, 255, 0.1);
+  border-left: 4px solid #D400FF;
   border-radius: 8px;
   padding: 10px 12px;
   display: flex;
@@ -582,7 +581,7 @@ body {
 .avg-value {
   font-size: 16px;
   font-weight: 700;
-  color: #00c9b1;
+  color: #D400FF;
 }
 
 #settings-date-format {
@@ -757,5 +756,4 @@ body {
     max-height: 200px !important;
   }
 }
-
 
