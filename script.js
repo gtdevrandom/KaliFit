@@ -432,7 +432,7 @@ function openSettings() {
   document.getElementById('settings-height').value = settings.height || '';
   document.getElementById('settings-birth-year').value = settings.birthYear || '';
   document.getElementById('settings-date-format').value = settings.dateFormat || 'fr';
-  document.getElementById('settings-secondary-color').value = settings.secondaryColor || '#00c9b1';
+  document.getElementById('settings-secondary-color').value = settings.secondaryColor || '#d400ffff';
   
   document.querySelectorAll('input[name="theme"]').forEach(radio => {
     radio.checked = radio.value === (settings.theme || 'light');
@@ -460,7 +460,7 @@ function savePreferences() {
   const settings = getSettings();
   settings.theme = document.querySelector('input[name="theme"]:checked')?.value || 'light';
   settings.dateFormat = document.getElementById('settings-date-format').value;
-  settings.secondaryColor = document.getElementById('settings-secondary-color').value || '#00c9b1';
+  settings.secondaryColor = document.getElementById('settings-secondary-color').value || '#d400ffff';
   save.settings(settings);
   alert('Préférences sauvegardées');
 }
