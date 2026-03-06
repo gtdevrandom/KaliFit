@@ -7,7 +7,7 @@
   --card-border: #e0e0e0;
   --input-bg: #ffffff;
   --input-border: #d0d0d0;
-  --primary-color: #00c9b1;
+  --primary-color: #D400FF;
 }
 
 html, body {
@@ -757,4 +757,5 @@ body {
     max-height: 200px !important;
   }
 }
+
 
