@@ -1030,7 +1030,7 @@ const API_KEY = "AIzaSyASBZHrRnMGMTWACYaNSOcfjKenCBXvTdY"; // TA CLÉ API RESTRE
 
 // Fonction pour appeler Gemini API
 async function callGeminiAPI(prompt) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
+    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`;
     
     try {
         const payload = {
