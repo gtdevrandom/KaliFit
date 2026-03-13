@@ -482,19 +482,77 @@ function savePreferences() {
 function applyTheme(theme, secondaryColor) {
   const t = THEMES[theme] || THEMES.light;
   const root = document.documentElement;
+  const primaryColor = secondaryColor || '#00c9b1';
+  
   root.style.setProperty('--bg-color', t.bg);
   root.style.setProperty('--text-color', t.text);
   root.style.setProperty('--card-bg', t.cardBg);
   root.style.setProperty('--card-border', t.cardBorder);
   root.style.setProperty('--input-bg', t.inputBg);
   root.style.setProperty('--input-border', t.inputBorder);
-  root.style.setProperty('--primary-color', secondaryColor || '#00c9b1');
+  root.style.setProperty('--primary-color', primaryColor);
   document.body.style.background = t.bg;
   document.documentElement.style.background = t.bg;
+  
+  // Mettre à jour la meta theme-color pour le navigateur et l'app mobile
+  const themeColorMeta = document.getElementById('theme-color');
+  if (themeColorMeta) {
+    themeColorMeta.setAttribute('content', primaryColor);
+  }
+  
+  // Mettre à jour le manifest dynamiquement
+  updateManifestTheme(primaryColor, t.bg);
+  
   // Rafraîchir les éléments qui dépendent du thème
   updateStatsScreen();
   displaySessionHistory();
   displayFoodsList();
+}
+
+function updateManifestTheme(themeColor, bgColor) {
+  // Créer un manifest personnalisé avec les couleurs du thème
+  const manifest = {
+    short_name: 'KaliFit',
+    name: 'KaliFit - Fitness & Nutrition',
+    description: 'Application d\'entraînement physique et de nutrition',
+    icons: [
+      {
+        src: './images/logo-192.png',
+        type: 'image/png',
+        sizes: '192x192',
+        purpose: 'any maskable'
+      },
+      {
+        src: './images/logo-512.png',
+        type: 'image/png',
+        sizes: '512x512',
+        purpose: 'any maskable'
+      }
+    ],
+    start_url: './',
+    scope: './',
+    display: 'standalone',
+    orientation: 'portrait-primary',
+    theme_color: themeColor,
+    background_color: bgColor,
+    shortcuts: [
+      {
+        name: 'Accueil',
+        short_name: 'Accueil',
+        description: 'Aller à la page d\'accueil',
+        url: './',
+        icons: [{ src: './images/logo-192.png', sizes: '192x192' }]
+      }
+    ]
+  };
+  
+  // Créer un blob et mettre à jour le link du manifest
+  const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+  const manifestUrl = URL.createObjectURL(manifestBlob);
+  const manifestLink = document.getElementById('manifest-link');
+  if (manifestLink) {
+    manifestLink.href = manifestUrl;
+  }
 }
 
 function applyColorPreview(color) {

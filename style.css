@@ -462,7 +462,7 @@ body {
 }
 
 .nav-item.active .nav-label {
-  color: #D400FF;
+  color: var(--primary-color);
   font-weight: 700;
 }
 
