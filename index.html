@@ -20,7 +20,6 @@
       <header class="app-header">
         <img src="./images/logo-192.png" alt="KaliFit" class="logo-img">
         <h1>KaliFit</h1>
-        <button onclick="clearSiteCache()">Vider le cache</button> <!--a delete dans le futur-->
       </header>
 
       <section id="screen-accueil" class="screen active">
@@ -202,7 +201,7 @@
         <div class="card">
           <div class="card-title">Heatmap séances</div>
           <div class="heatmap-legend">
-            <div style="font-size:12px;opacity:0.7;margin-bottom:8px;">5 dernières semaines</div>
+            <div class="heatmap-legend-header">5 dernières semaines</div>
           </div>
           <div class="heatmap-days-header">
             <div>Lun</div>
@@ -222,12 +221,12 @@
             <div class="heatmap-cell active"></div>
             <div class="heatmap-cell inactive"></div>
           </div>
-          <div class="heatmap-legend" style="margin-top:12px;">
-            <div style="display:flex;gap:16px;font-size:12px;opacity:0.8;">
-              <div style="display:flex;gap:6px;align-items:center;"><div style="width:16px;height:16px;background:var(--card-border);border-radius:4px;opacity:0.3;"></div> Repos</div>
-              <div style="display:flex;gap:6px;align-items:center;"><div style="width:16px;height:16px;background:var(--primary-color);border-radius:4px;opacity:0.35;"></div> Faible</div>
-              <div style="display:flex;gap:6px;align-items:center;"><div style="width:16px;height:16px;background:var(--primary-color);border-radius:4px;opacity:0.65;"></div> Modéré</div>
-              <div style="display:flex;gap:6px;align-items:center;"><div style="width:16px;height:16px;background:var(--primary-color);border-radius:4px;opacity:1;"></div> Élevé</div>
+          <div class="heatmap-legend mt-12">
+            <div class="heatmap-legend-items">
+              <div class="heatmap-legend-item"><div class="heatmap-legend-box heatmap-box-repos"></div> Repos</div>
+              <div class="heatmap-legend-item"><div class="heatmap-legend-box heatmap-box-faible"></div> Faible</div>
+              <div class="heatmap-legend-item"><div class="heatmap-legend-box heatmap-box-modere"></div> Modéré</div>
+              <div class="heatmap-legend-item"><div class="heatmap-legend-box heatmap-box-eleve"></div> Élevé</div>
             </div>
           </div>
         </div>
@@ -309,6 +308,16 @@
             <input type="number" id="settings-birth-year" placeholder="1990" min="1900" max="2099" />
           </div>
           <button class="btn-teal" onclick="saveSettings()">Enregistrer</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">À propos</div>
+          <div class="about-content">
+            <p><strong>KaliFit - Fitness & Nutrition</strong></p>
+            <p class="about-copyright">Copyright © 2026 gtdevrandom</p>
+            <p class="about-license">MIT License - Permission is hereby granted, free of charge, to any person obtaining a copy of this software.</p>
+          </div>
+          <button class="btn-teal mt-12" onclick="clearSiteCache()">🗑️ Vider le cache</button>
         </div>
 
         <div class="card">

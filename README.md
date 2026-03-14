@@ -44,9 +44,8 @@ Refuse  | Site meteo + qualite de l'air + autres informations
 Refuse  | API de trading
 Valide  | Integration Spotify, Deezer, Soundcharts, YouTube mp3
 Potentiel | YouTube, Twitch
-Refuse  | IA ? (Explorer des fonctionnalites d'intelligence artificielle)
+Gagnant  | Foods & Nutrition + IA avec Hugging Face
 Potentiel | SMS
-Gagnant  | Sports, alimentation (+IA ?)
 Refuse  | Plaque d'immatriculation / vehicule
 Refuse  | Images
 Refuse  | Cybersecurite
@@ -62,8 +61,7 @@ KaliFit repose sur une architecture robuste, privilegiant la securite des donnee
 
 Resume des services
 1. OpenFoodFacts : Recherche & Donnees nutritionnelles (publique, sans cle)
-2. WGER : Exercices & Routines fitness (OAuth2, session utilisateur)
-3. Google Gemini : Coach IA & Analyse predictive (Firebase Auth, via Proxy Serverless)
+2. Hugging Face : Coach IA & Analyse predictive (via Vercel Serverless)
 
 Details techniques
 - OpenFoodFacts (Nutrition)
@@ -71,18 +69,14 @@ Details techniques
   Usage : Recherche par nom ou scan code-barres.
   Acces libre.
 
-- WGER (Sport)
-  Acces a une bibliotheque d'exercices et suivi des performances.
-  Authentification via OAuth2 pour preserver la vie privee.
-
-- Google Gemini (IA)
-  Generation de conseils et analyse de stagnation.
+- Hugging Face (IA)
+  Generation de conseils et analyse intelligente via modeles de language.
   
   Architecture securisee :
-  - Le front-end envoie la requete a une Firebase Cloud Function
-  - Verification d'identite via Firebase Auth
-  - Appel de l'API Gemini via variable d'environnement securisee
-  - Retour uniquement de la reponse traitee
+  - Le front-end envoie la requete a une Vercel Edge Function / API Route
+  - La cle API Hugging Face est stockee dans les variables d'environnement Vercel
+  - Appel de l'API Hugging Face via le proxy Vercel
+  - Retour uniquement de la reponse traitee au client
 
 Note de securite : Aucune cle API sensible n'est presente cote client.
 
@@ -106,12 +100,12 @@ Fonctionnalites de KaliFit
 
 Objectifs :
 -----------
-- Connecter trois api différentes **(1/3)**
+- ~~Connecter trois api différentes **(2/2)**~~
 - ~~Différents thèmes~~
 - ~~application téléchargeable~~
-- Optimisation Openfoodfact
-- Ajout license sur le site
-- Création logo 
+- ~~Optimisation Openfoodfact~~
+- ~~Ajout license sur le site~~
+- ~~Création logo~~ 
 
 ---
 

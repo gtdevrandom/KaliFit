@@ -835,6 +835,74 @@ body {
   gap: 8px;
 }
 
+.about-content {
+  font-size: 13px;
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.heatmap-legend-header {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-bottom: 8px;
+}
+
+.heatmap-legend-items {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.heatmap-legend-item {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.heatmap-legend-box {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.heatmap-box-repos {
+  background: var(--card-border);
+  opacity: 0.3;
+}
+
+.heatmap-box-faible {
+  background: var(--primary-color);
+  opacity: 0.35;
+}
+
+.heatmap-box-modere {
+  background: var(--primary-color);
+  opacity: 0.65;
+}
+
+.heatmap-box-eleve {
+  background: var(--primary-color);
+  opacity: 1;
+}
+
+.about-copyright {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: 12px;
+}
+
+.about-license {
+  font-size: 11px;
+  opacity: 0.7;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.mt-12 {
+  margin-top: 12px;
+}
+
 @media (max-width: 768px) {
   body {
     padding: 0;

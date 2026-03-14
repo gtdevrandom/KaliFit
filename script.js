@@ -1,6 +1,14 @@
+// ============================================
+// INITIALIZATION
+// ============================================
+
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js').catch(() => {});
 }
+
+// ============================================
+// STORAGE & CONFIGURATION
+// ============================================
 
 const storage = {
   get: (key, defaults = {}) => {
@@ -10,7 +18,6 @@ const storage = {
   set: (key, data) => localStorage.setItem(key, JSON.stringify(data))
 };
 
-// Themes
 const THEMES = {
   light: {
     bg: '#f2f2f2', text: '#000000', cardBg: '#ffffff', cardBorder: '#e0e0e0',
@@ -22,7 +29,6 @@ const THEMES = {
   }
 };
 
-// Couleur secondaire
 const SECONDARY_COLORS = {
   teal: '#00c9b1',
   blue: '#2196F3',
@@ -33,7 +39,10 @@ const SECONDARY_COLORS = {
   pink: '#E91E63'
 };
 
-//a delete dans le futur
+// ============================================
+// CACHE & DATA MANAGEMENT
+// ============================================
+
 async function clearSiteCache() {
 
   if ('caches' in window) {
@@ -86,11 +95,19 @@ const calculateBMI = (weightKg, heightCm) => {
   return (weightKg / (heightM * heightM)).toFixed(1);
 };
 
+// ============================================
+// MODAL MANAGEMENT
+// ============================================
+
 const modal = {
   open: (id) => { document.getElementById(id).classList.add('active'); },
   close: (id) => { document.getElementById(id).classList.remove('active'); },
   closeAll: () => { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); }
 };
+
+// ============================================
+// WEIGHT & CHART FUNCTIONS
+// ============================================
 
 function openWeightChart() {
   modal.open('weight-modal');
@@ -130,7 +147,6 @@ function saveWeight() {
   
   save.weight(data);
   closeWeightForm();
-  // Mettre à jour les suggestions IA
   if (window.refreshAISuggestions) {
     setTimeout(() => window.refreshAISuggestions(), 500);
   }
@@ -237,6 +253,10 @@ function displayWeightList(data) {
   `).join('');
 }
 
+// ============================================
+// SLEEP & CHART FUNCTIONS
+// ============================================
+
 function openSleepChart() {
   modal.open('sleep-modal');
   setTimeout(() => drawSleepChart(), 100);
@@ -278,7 +298,6 @@ function saveSleep() {
   
   save.sleep(data);
   closeSleepForm();
-  // Mettre à jour les suggestions IA
   if (window.refreshAISuggestions) {
     setTimeout(() => window.refreshAISuggestions(), 500);
   }
@@ -382,6 +401,10 @@ function displaySleepList(data) {
   `).join('');
 }
 
+// ============================================
+// APP INITIALIZATION
+// ============================================
+
 document.addEventListener('DOMContentLoaded', function () {
   var navItems = document.querySelectorAll('.nav-item');
   var screens = document.querySelectorAll('.screen');
@@ -399,7 +422,7 @@ document.addEventListener('DOMContentLoaded', function () {
           if (target === 'screen-stats' || target === 'screen-profil') {
             setTimeout(() => {
               displayGoals();
-              updateStatsScreen(); // Mettre à jour la heatmap et l'encouragement
+              updateStatsScreen(); 
               refreshAllGraphs();
             }, 100);
           } else if (target === 'screen-accueil') {
@@ -432,12 +455,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   displayGoals();
   displayHomeScreen();
-  updateStatsScreen(); // Initialiser la heatmap et l'encouragement
+  updateStatsScreen(); 
   initNutrition();
   
   const settings = getSettings();
   applyTheme(settings.theme, settings.secondaryColor);
 });
+
+// ============================================
+// THEME & SETTINGS MANAGEMENT
+// ============================================
 
 function openSettings() {
   const settings = getSettings();
@@ -494,23 +521,19 @@ function applyTheme(theme, secondaryColor) {
   document.body.style.background = t.bg;
   document.documentElement.style.background = t.bg;
   
-  // Mettre à jour la meta theme-color pour le navigateur et l'app mobile
   const themeColorMeta = document.getElementById('theme-color');
   if (themeColorMeta) {
     themeColorMeta.setAttribute('content', primaryColor);
   }
   
-  // Mettre à jour le manifest dynamiquement
   updateManifestTheme(primaryColor, t.bg);
   
-  // Rafraîchir les éléments qui dépendent du thème
   updateStatsScreen();
   displaySessionHistory();
   displayFoodsList();
 }
 
 function updateManifestTheme(themeColor, bgColor) {
-  // Créer un manifest personnalisé avec les couleurs du thème
   const manifest = {
     short_name: 'KaliFit',
     name: 'KaliFit - Fitness & Nutrition',
@@ -546,7 +569,6 @@ function updateManifestTheme(themeColor, bgColor) {
     ]
   };
   
-  // Créer un blob et mettre à jour le link du manifest
   const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
   const manifestUrl = URL.createObjectURL(manifestBlob);
   const manifestLink = document.getElementById('manifest-link');
@@ -560,6 +582,10 @@ function applyColorPreview(color) {
   const root = document.documentElement;
   root.style.setProperty('--primary-color', color);
 }
+
+// ============================================
+// GOALS MANAGEMENT
+// ============================================
 
 function openGoalForm() {
   const goals = getGoals();
@@ -607,14 +633,16 @@ function saveGoals() {
   closeGoalForm();
 }
 
-// Génère la heatmap des séances (derniers 30 jours)
+// ============================================
+// PROGRESS & HEATMAP
+// ============================================
+
 function generateSessionsHeatmap() {
   const sessions = getSessionsData();
   const heatmapGrid = document.querySelector('.heatmap-grid');
   
   if (!heatmapGrid) return;
 
-  // Créer un calendrier des 35 derniers jours (5 semaines)
   const today = new Date();
   const days = [];
   
@@ -623,7 +651,6 @@ function generateSessionsHeatmap() {
     date.setDate(date.getDate() - i);
     const dateStr = date.toISOString().split('T')[0];
     
-    // Calculer la charge de la journée (somme des durées pondérées par l'intensité)
     const dayIntensity = sessions
       .filter(s => s.date === dateStr)
       .reduce((total, s) => {
@@ -634,11 +661,9 @@ function generateSessionsHeatmap() {
     days.push({ date: dateStr, intensity: dayIntensity });
   }
 
-  // Générer les cellules avec une grille de 7 colonnes (dimanche à samedi)
   let html = days.map((day, index) => {
-    // Déterminer le jour de la semaine pour ce jour
     const date = new Date(day.date);
-    const dayOfWeek = (date.getDay() + 6) % 7; // Lundi = 0
+    const dayOfWeek = (date.getDay() + 6) % 7; 
     const isNewRow = dayOfWeek === 0;
     
     let className = 'heatmap-cell';
@@ -657,7 +682,6 @@ function generateSessionsHeatmap() {
   heatmapGrid.innerHTML = html;
 }
 
-// Génère un encouragement pour les stats basé sur la progression
 function generateProgressEncouragement() {
   const weightData = getWeightData();
   const goals = getGoals();
@@ -695,7 +719,6 @@ function generateProgressEncouragement() {
   return encouragement;
 }
 
-// Met à jour l'affichage des stats avec heatmap et encouragement
 function updateStatsScreen() {
   generateSessionsHeatmap();
   
@@ -744,7 +767,14 @@ function displayGoals() {
   });
 }
 
-// Calcule la charge d'entraînement pour les 7 derniers jours
+// ============================================
+// HOME SCREEN & STATS
+// ============================================
+
+// ============================================
+// HOME SCREEN & STATS
+// ============================================
+
 function calculateTrainingLoad() {
   const sessions = getSessionsData();
   const sevenDaysAgo = new Date();
@@ -754,7 +784,6 @@ function calculateTrainingLoad() {
   
   if (recentSessions.length === 0) return 0;
   
-  // Calculer la charge: durée * multiplicateur d'intensité
   let totalLoad = 0;
   recentSessions.forEach(session => {
     const intensityMultiplier = 
@@ -806,18 +835,15 @@ function displayHomeScreen() {
     document.getElementById('home-sleep-text').textContent = 'N/A';
   }
   
-  // Mettre à jour la charge d'entraînement
   const trainingLoad = calculateTrainingLoad();
   const trainingLoadElement = document.getElementById('home-training-load');
   if (trainingLoadElement) {
     trainingLoadElement.textContent = trainingLoad > 0 ? trainingLoad + ' pts' : 'N/A';
   }
   
-  // Mettre à jour la nutrition du jour sur l'accueil
   updateHomeNutrition();
 }
 
-// Met à jour l'affichage de la nutrition du jour sur l'accueil
 function updateHomeNutrition() {
   const foods = getTodayFoods();
   
@@ -830,19 +856,16 @@ function updateHomeNutrition() {
     totalCalories += food.calories || 0;
   });
 
-  // Objectifs par défaut (peut être personnalisé)
   const targetProteins = 150;
   const targetCarbs = 250;
   const targetFats = 70;
   const targetCalories = 2000;
 
-  // Mettre à jour les textes
   document.getElementById('home-nutrition-protein-text').textContent = totalProteins.toFixed(1) + 'g';
   document.getElementById('home-nutrition-carbs-text').textContent = totalCarbs.toFixed(1) + 'g';
   document.getElementById('home-nutrition-fat-text').textContent = totalFats.toFixed(1) + 'g';
   document.getElementById('home-nutrition-calories-text').textContent = totalCalories.toFixed(0) + ' kcal';
 
-  // Mettre à jour les barres de progression
   const proteinPercent = Math.min((totalProteins / targetProteins) * 100, 100);
   const carbsPercent = Math.min((totalCarbs / targetCarbs) * 100, 100);
   const fatPercent = Math.min((totalFats / targetFats) * 100, 100);
@@ -851,6 +874,10 @@ function updateHomeNutrition() {
   document.getElementById('home-nutrition-carbs-bar').style.width = carbsPercent + '%';
   document.getElementById('home-nutrition-fat-bar').style.width = fatPercent + '%';
 }
+
+// ============================================
+// NUTRITION & FOOD MANAGEMENT
+// ============================================
 
 const getNutritionData = () => storage.get('nutritionData', {});
 const getTodayFoods = () => {
@@ -911,7 +938,6 @@ async function searchFoods() {
       </div>
     `).join('');
     
-    // Ajouter les event listeners pour tous les items
     document.querySelectorAll('.food-search-item').forEach(item => {
       const idx = parseInt(item.getAttribute('data-index'));
       item.addEventListener('click', () => selectFoodByIndex(idx));
@@ -1006,8 +1032,7 @@ function addFoodToDay() {
   closeFoodDetailsModal();
   displayFoodsList();
   updateNutritionDisplay();
-  updateHomeNutrition(); // Mettre à jour la nutrition de l'accueil
-  // Mettre à jour les suggestions IA
+  updateHomeNutrition(); 
   if (window.refreshAISuggestions) {
     setTimeout(() => window.refreshAISuggestions(), 500);
   }
@@ -1106,7 +1131,6 @@ function updateNutritionDisplay() {
   document.getElementById('nutrition-carbs-bar').style.width = Math.min((totals.carbs / needs.carbs) * 100, 100) + '%';
   document.getElementById('nutrition-fat-bar').style.width = Math.min((totals.fats / needs.fats) * 100, 100) + '%';
   
-  // Aussi mettre à jour l'affichage de la nutrition sur l'accueil
   updateHomeNutrition();
 }
 
@@ -1116,7 +1140,10 @@ function initNutrition() {
   updateHomeNutrition();
 }
 
-// ===== GESTION DES SÉANCES DE SPORT =====
+
+// ============================================
+// SESSIONS & TRAINING
+// ============================================
 
 const getSessionsData = () => storage.get('sessionsData', []);
 
@@ -1134,7 +1161,6 @@ function closeSessionForm() {
   modal.close('session-form-modal');
   displaySessionHistory();
   updateSessionQuality();
-  // Mettre à jour la heatmap et l'encouragement
   updateStatsScreen();
   displayHomeScreen();
 }
@@ -1169,7 +1195,6 @@ function saveSession() {
   
   save.sessions(data);
   closeSessionForm();
-  // Mettre à jour les suggestions IA
   if (window.refreshAISuggestions) {
     setTimeout(() => window.refreshAISuggestions(), 500);
   }
@@ -1249,7 +1274,6 @@ function calculateSessionQuality() {
   const sessions = getSessionsData();
   if (sessions.length === 0) return 'N/A';
 
-  // Prendre les 7 derniers jours
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
   const recentSessions = sessions.filter(s => new Date(s.date) >= sevenDaysAgo);
@@ -1258,23 +1282,19 @@ function calculateSessionQuality() {
 
   let score = 0;
 
-  // Critère 1: Régularité (max 3 points)
   const daysWithSessions = new Set(recentSessions.map(s => s.date)).size;
   if (daysWithSessions >= 5) score += 3;
   else if (daysWithSessions >= 3) score += 2;
   else if (daysWithSessions >= 1) score += 1;
 
-  // Critère 2: Variété (max 2 points)
   const types = new Set(recentSessions.map(s => s.type)).size;
   if (types >= 3) score += 2;
   else if (types >= 2) score += 1;
 
-  // Critère 3: Intensité (max 2 points)
   const highIntensityCount = recentSessions.filter(s => s.intensity === 'elevee').length;
   if (highIntensityCount >= 2) score += 2;
   else if (highIntensityCount >= 1) score += 1;
 
-  // Critère 4: Durée moyenne (max 3 points)
   const avgDuration = recentSessions.reduce((sum, s) => sum + s.duration, 0) / recentSessions.length;
   if (avgDuration >= 45) score += 3;
   else if (avgDuration >= 30) score += 2;
