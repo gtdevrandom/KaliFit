@@ -180,7 +180,7 @@ Les données utilisateur (poids, séances, aliments) sont stockées **localement
 ### Prérequis
 
 - Un compte [Vercel](https://vercel.com) (pour le déploiement)
-- Une clé API [Hugging Face](https://huggingface.co/settings/tokens)
+- Une clé API [Hugging Face](https://huggingface.co)
 - Git
 
 ### Étapes
