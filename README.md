@@ -1,5 +1,5 @@
-# 🏋️ KaliFit — Wiki <img src="images/logo-512.png" alt="KaliFit logo" width="45">
-==============================================
+# 🏋️ KaliFit — Wiki <img src="public/images/logo-512.png" alt="KaliFit logo" width="45">
+
 
 > **KaliFit** est une Progressive Web App (PWA) combinant nutrition et fitness, réalisée dans le cadre du projet NSI Terminale. Le nom est issu de *Kalos* (beauté et perfection en grec) et *Fit* (fitness et performance).
 
