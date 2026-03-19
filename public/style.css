@@ -142,12 +142,18 @@ body {
 
 .data-row .value {
   font-weight: 700;
-  color: var(--primary-color);
   font-size: 15px;
   display: flex;
   align-items: center;
   gap: 4px;
-  filter: brightness(0.75);
+}
+
+.light .data-row .value {
+  color: #0033aa;
+}
+
+.dark .data-row .value {
+  color: #ffff00;
 }
 
 /* ====== PROGRESS BARS ====== */
@@ -266,7 +272,6 @@ body {
 .score-big {
   font-size: 48px;
   font-weight: 700;
-  color: var(--primary-color);
   text-align: center;
   line-height: 1.1;
   padding: 16px 0;
@@ -274,7 +279,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: brightness(0.75);
+}
+
+.light .score-big {
+  color: #0033aa;
+}
+
+.dark .score-big {
+  color: #ffff00;
 }
 
 .score-label {
@@ -287,14 +299,20 @@ body {
 .obj-percent {
   font-size: 48px;
   font-weight: 700;
-  color: #D400FF;
   text-align: center;
   padding: 16px 0;
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: brightness(0.75);
+}
+
+.light .obj-percent {
+  color: #0033aa;
+}
+
+.dark .obj-percent {
+  color: #ffff00;
 }
 
 /* ====== BUTTONS ====== */
@@ -580,11 +598,11 @@ body {
 }
 
 .light .nav-label {
-  color: #333333;
+  color: #000000;
 }
 
 .dark .nav-label {
-  color: #e0e0e0;
+  color: #ffffff;
 }
 
 .nav-item.active .nav-label {
@@ -592,11 +610,11 @@ body {
 }
 
 .light .nav-item.active .nav-label {
-  color: #8800cc;
+  color: #0033aa;
 }
 
 .dark .nav-item.active .nav-label {
-  color: #ff99ff;
+  color: #ffff00;
 }
 
 /* ====== MODAL ====== */
@@ -769,9 +787,15 @@ body {
 }
 
 .data-item .value {
-  color: #D400FF;
   font-weight: 700;
-  filter: brightness(0.75);
+}
+
+.light .data-item .value {
+  color: #0033aa;
+}
+
+.dark .data-item .value {
+  color: #ffff00;
 }
 
 .average-box {
