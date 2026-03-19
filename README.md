@@ -42,25 +42,25 @@ Le projet a été réalisé en **HTML / CSS / JavaScript vanilla**, sans framewo
 
 ```
 KaliFit/
-┌── index.html          # Structure principale de l'application (SPA)
-├── script.js           # Logique front-end (interactions, données, UI)
-├── manifest.json       # Manifeste PWA
-├── sw.js               # Service Worker (cache hors-ligne)
-├── LICENSE             # Licence MIT
-├── README.md           # Résumé du projet
-├── api/                # Fonctions serverless Vercel (proxy API sécurisé)
+┌── index.html            # Structure principale de l'application (SPA)
+├── script.js             # Logique front-end (interactions, données, UI)
+├── manifest.json         # Manifeste PWA
+├── sw.js                 # Service Worker (cache hors-ligne)
+├── LICENSE               # Licence MIT
+├── README.md             # Résumé du projet
+├── api/                  # Fonctions serverless Vercel (proxy API sécurisé)
 │   └── ai.js
 ├── src/
 │   └── script.js
 ├── config/
-│   ├── ai-config.js    # Configuration du module IA (Hugging Face)
-│   └── openfoodfacts.js
+│   ├── ai-config.js      # Configuration du module IA (Hugging Face)
+│   └── openfoodfacts.js  # Configuration du module Openfoodfacts 
 ├── public/
-│   ├── style.css       # Feuille de styles globale
-│   └── images/         # Icônes PWA et assets visuels
+│   ├── style.css         # Feuille de styles globale
+│   └── images/           # Icônes PWA et assets visuels
 │      ├── logo-192.png
 │      └── logo-512.png
-├── maquette_figma/     # Captures de la maquette Figma
+├── maquette_figma/       # Captures de la maquette Figma
 │   ├── app.png
 └── └── pop_up.png
 
@@ -111,7 +111,7 @@ KaliFit/
 - **Ratio performance/calories** : indicateur de l'efficacité de l'entraînement
 - **Heatmap des séances** : visualisation sur les 5 dernières semaines (repos / faible / modéré / élevé)
 - **Masse grasse et masse musculaire** estimées
-- **Suggestions IA** sur la progression globale
+- **Encouragements IA** pour progresser
 
 ### 👤 Profil
 
@@ -188,7 +188,7 @@ Les données utilisateur (poids, séances, aliments) sont stockées **localement
 
 - Un compte [Vercel](https://vercel.com) (pour le déploiement)
 - Une clé API [Hugging Face](https://huggingface.co)
-- Git
+- Git / Github
 
 ### Étapes
 
@@ -207,7 +207,7 @@ vercel deploy
 |---|---|
 | `HUGGINGFACE_API_KEY` | Clé d'accès à l'API Hugging Face |
 
-> ⚠️ Ne jamais committer la clé API dans le code source.
+> ⚠️ Ne jamais mettre la clé API dans le code source.
 
 ### Utilisation en local (sans IA)
 
