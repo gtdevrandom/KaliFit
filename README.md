@@ -65,7 +65,21 @@ KaliFit/
 │      ├── lighthouse.webp
 │      ├── logo.drawio
 │      ├── logo-192.webp
-│      └── logo-512.webp
+│      ├── logo-512.webp
+│      ├──nav-bar/
+│           ├── home.webp
+│           ├── sport.webp
+│           ├── stats.webp
+│           ├── profil.webp
+│           ├── params.webp
+│           └── food.webp
+│      └──nav-bar-white/
+│           ├── home-white.webp
+│           ├── sport-white.webp
+│           ├── stats-white.webp
+│           ├── profil-white.webp
+│           ├── params-white.webp
+│           └── food-white.webp
 ├── maquette_figma/       # Captures de la maquette Figma
 │   ├── app.webp
 │   ├── kalifit.fig
