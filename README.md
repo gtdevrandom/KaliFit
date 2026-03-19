@@ -20,8 +20,10 @@
 7. [PWA — Progressive Web App](#7-pwa--progressive-web-app)
 8. [Personnalisation et thèmes](#8-personnalisation-et-thèmes)
 9. [Maquette et design](#9-maquette-et-design)
-10. [Objectifs du projet (NSI)](#10-objectifs-du-projet-nsi)
-11. [Licence](#11-licence)
+10. [Référencement et SEO](#10-référencement-et-seo)
+11. [Performance — Rapport Lighthouse](#11-performance--rapport-lighthouse)
+12. [Objectifs du projet (NSI)](#12-objectifs-du-projet-nsi)
+13. [Licence](#13-licence)
 
 ---
 
@@ -245,7 +247,66 @@ Le logo a été créé avec **draw.io** et est fourni en deux résolutions : 192
 
 ---
 
-## 10. Objectifs du projet (NSI)
+## 10. Référencement et SEO
+
+Deux fichiers standards sont inclus à la racine du projet pour améliorer l'indexation et le référencement de l'application.
+
+### `robots.txt`
+
+Le fichier `robots.txt` est une convention universelle du web permettant d'indiquer aux robots des moteurs de recherche (Googlebot, Bingbot, etc.) quelles parties du site ils sont autorisés à explorer.
+
+Dans KaliFit, il est configuré ainsi :
+
+- **Tout le site est accessible** aux robots (`Allow: /`)
+- **Le dossier `/api/` est bloqué** (`Disallow: /api/`) — les routes serverless Vercel ne doivent pas être indexées car elles ne contiennent pas de contenu destiné aux utilisateurs
+- **Googlebot et Bingbot** sont explicitement autorisés
+- **Le chemin vers le sitemap** est déclaré à la fin pour que les moteurs de recherche le trouvent automatiquement
+
+```
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://kali-fit.vercel.app/sitemap.xml
+```
+
+### `sitemap.xml`
+
+Le fichier `sitemap.xml` liste toutes les pages importantes du site afin d'aider les moteurs de recherche à les découvrir et à les indexer efficacement.
+
+KaliFit étant une application monopage (SPA), le sitemap contient une seule entrée correspondant à la page principale :
+
+| Champ | Valeur | Signification |
+|---|---|---|
+| `<loc>` | `https://kali-fit.vercel.app/` | URL de la page |
+| `<lastmod>` | `2026-03-19` | Date de dernière modification |
+| `<changefreq>` | `weekly` | Fréquence de mise à jour estimée |
+| `<priority>` | `1.0` | Priorité maximale pour l'indexation |
+
+> 💡 Ces deux fichiers n'ont pas d'effet visible pour l'utilisateur, mais ils sont essentiels pour garantir une bonne **visibilité sur les moteurs de recherche** et indiquer aux robots ce qu'ils doivent (ou ne doivent pas) explorer.
+
+---
+
+## 11. Performance — Rapport Lighthouse
+
+[Lighthouse](https://developer.chrome.com/docs/lighthouse/) est un outil d'audit automatisé intégré à Google Chrome (DevTools) qui évalue la qualité d'une application web selon quatre critères principaux.
+
+### Résultats obtenus
+
+![Rapport Lighthouse de KaliFit](public/images/lighthouse.png)
+
+| Catégorie | Score | Description |
+|---|---|---|
+| ⚡ **Performance** | Temps de chargement, rendu, optimisation des ressources |
+| ♿ **Accessibilité** | Lisibilité, contrastes, balises ARIA, navigation clavier |
+| ✅ **Bonnes pratiques** | HTTPS, erreurs console, sécurité, standards modernes |
+| 🔍 **SEO** | Balises meta, structure, robots.txt, lisibilité pour les moteurs |
+
+> Les scores Lighthouse valident que KaliFit respecte les standards actuels du web en matière de rapidité, d'accessibilité et d'optimisation pour les moteurs de recherche.
+
+---
+
+## 12. Objectifs du projet (NSI)
 
 Ce projet a été réalisé dans le cadre du cours **Numérique et Sciences Informatiques (NSI) — Terminale**, avec pour objectif d'explorer l'utilisation d'APIs externes dans une application web.
 
@@ -273,7 +334,7 @@ Ce projet a été réalisé dans le cadre du cours **Numérique et Sciences Info
 
 ---
 
-## 11. Licence
+## 13. Licence
 
 Ce projet est distribué sous licence **MIT**.
 
