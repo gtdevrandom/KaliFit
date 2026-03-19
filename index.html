@@ -13,6 +13,7 @@
     <meta property="og:description" content="Suivez votre fitness et nutrition avec cette application webproressive" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://kali-fit.vercel.app/" />
+    <link rel="canonical" href="https://kali-fit.vercel.app/" />
     <link rel="icon" type="image/png" href="./public/images/logo-192.png" />
     <link rel="apple-touch-icon" href="./public/images/logo-192.png" />
     <link rel="manifest" href="./manifest.json" id="manifest-link" />
@@ -25,9 +26,9 @@
     <script defer src="./src/script.js"></script>
   </head>
   <body>
-    <div class="app">
+    <main class="app">
       <header class="app-header">
-        <img src="./public/images/logo-192.png" alt="KaliFit" class="logo-img">
+        <img src="./public/images/logo-192.png" alt="KaliFit" class="logo-img" fetchpriority="high" loading="eager">
         <h1>KaliFit</h1>
       </header>
 
@@ -617,6 +618,6 @@
         </div>
       </div>
 
-    </div>
+    </main>
   </body>
 </html>

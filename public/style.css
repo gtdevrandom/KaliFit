@@ -578,12 +578,13 @@ body {
   font-size: 10px;
   color: var(--text-color);
   opacity: 0.6;
+  filter: brightness(1.2);
 }
 
 .nav-item.active .nav-label {
   color: var(--primary-color);
   font-weight: 700;
-  filter: brightness(0.6);
+  filter: brightness(0.5);
 }
 
 /* ====== MODAL ====== */
