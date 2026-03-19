@@ -119,14 +119,6 @@ Donne une suggestion d'entraînement courte (2-3 phrases). Réponds en français
 
   return await callAI(prompt, 200);
 }
-// 4.3 Suggestion Encouragement Stats
-async function generateStatsEncouragementSuggestion() {
-  const data = formatDataForAI();
-  const weight = data.lastWeight ? `${data.lastWeight}kg` : "N/A";
-  const goal = data.goal ? `${data.goal}kg` : "N/A";
-  const prompt = `Tu es un coach motivant. Voici les données: poids actuel ${weight}, objectif ${goal}.\nDonne une phrase d'encouragement personnalisée pour la progression, en français, sans mise en forme ni points.`;
-  return await callAI(prompt, 100);
-}
 
 // ==========================================
 // 5. MISE À JOUR DES SUGGESTIONS DANS L'UI
@@ -151,16 +143,6 @@ async function updateAllAISuggestions() {
       if (workoutCard) {
         workoutCard.innerHTML = workoutSuggestion.split('\n').slice(0,3).join('<br>');
         workoutCard.classList.add('ia-updated');
-      }
-    }
-
-    // Ajout suggestion encouragement stats
-    const statsSuggestion = await generateStatsEncouragementSuggestion();
-    if (statsSuggestion) {
-      const statsCard = document.querySelector('.ia-text.ia-stats');
-      if (statsCard) {
-        statsCard.innerHTML = statsSuggestion;
-        statsCard.classList.add('ia-updated');
       }
     }
 
