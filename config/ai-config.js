@@ -57,7 +57,7 @@ async function callAI(prompt, maxTokens = 200) {
       body: JSON.stringify({
         model: "meta-llama/Meta-Llama-3-8B-Instruct",
         messages: [
-          { role: "system", content: "Tu es KaliFit, un assistant fitness expert et bienveillant." },
+          { role: "system", content: "Tu es KaliFit, un assistant fitness expert et bienveillant. Ne fait pas de mise en forme (gras, italique, etc.) et ne fait pas sous forme de points." },
           { role: "user", content: prompt }
         ],
         max_tokens: maxTokens,
@@ -93,7 +93,7 @@ async function generateNutritionSuggestion() {
     : "Aucun repas enregistré";
 
   const prompt = `Tu es un nutritionniste expert. Basé sur les repas récents: ${mealsText}
-Donne 3 suggestions courtes et pratiques pour améliorer l'alimentation. Réponds en français.`;
+Donne 3 suggestions courtes et pratiques pour améliorer l'alimentation. Réponds en français.Ne fait pas de mise en forme (gras, italique, etc.) et ne fait pas sous forme de points.`;
 
   return await callAI(prompt, 200);
 }
@@ -115,7 +115,7 @@ async function generateWorkoutSuggestion() {
 Séances récentes: ${sessionsText}
 ${weightInfo}
 
-Donne une suggestion d'entraînement courte (2-3 phrases). Réponds en français.`;
+Donne une suggestion d'entraînement courte (2-3 phrases). Réponds en français. Ne fait pas de mise en forme (gras, italique, etc.) et ne fait pas sous forme de points.ss`;
 
   return await callAI(prompt, 200);
 }
