@@ -44,24 +44,24 @@ Le projet a été réalisé en **HTML / CSS / JavaScript vanilla**, sans framewo
 
 ```
 KaliFit/
-┌── index.html            # Structure principale de l'application (SPA)
-├── script.js             # Logique front-end (interactions, données, UI)
-├── manifest.json         # Manifeste PWA
-├── sw.js                 # Service Worker (cache hors-ligne)
-├── LICENSE               # Licence MIT
+┌── index.html                      # Structure principale de l'application (SPA)
+├── script.js                       # Logique front-end (interactions, données, UI)
+├── manifest.json                   # Manifeste PWA
+├── sw.js                           # Service Worker (cache hors-ligne)
+├── LICENSE                         # Licence MIT
 ├── robots.txt
 ├── sitemap.xml
-├── README.md             # Résumé du projet
-├── api/                  # Fonctions serverless Vercel (proxy API sécurisé)
+├── README.md                       # Résumé du projet
+├── api/                            # Fonctions serverless Vercel (proxy API sécurisé)
 │   └── ai.js
 ├── src/
 │   └── script.js
 ├── config/
-│   ├── ai-config.js      # Configuration du module IA (Hugging Face)
-│   └── openfoodfacts.js  # Configuration du module Openfoodfacts 
+│   ├── ai-config.js                # Configuration du module IA (Hugging Face)
+│   └── openfoodfacts.js            # Configuration du module Openfoodfacts 
 ├── public/
-│   ├── style.css         # Feuille de styles globale
-│   └── images/           # Icônes PWA et assets visuels
+│   ├── style.css                   # Feuille de styles globale
+│   └── images/                     # Icônes PWA et assets visuels
 │      ├── lighthouse.webp
 │      ├── logo.drawio
 │      ├── logo-192.webp
@@ -80,7 +80,7 @@ KaliFit/
 │           ├── profil-white.webp
 │           ├── params-white.webp
 │           └── food-white.webp
-├── maquette_figma/       # Captures de la maquette Figma
+├── maquette_figma/                 # Captures de la maquette Figma
 │   ├── app.webp
 │   ├── kalifit.fig
 └── └── pop_up.webp
