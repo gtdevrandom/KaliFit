@@ -69,9 +69,13 @@ async function clearSiteCache() {
 
   sessionStorage.clear();
 
-  alert("Cache vidé ! La page va se recharger.");
+  alert("Cache vidé !");
 
-  window.location.reload(true);
+  setTimeout(() => {
+    if (window.refreshAISuggestions) {
+      window.refreshAISuggestions();
+    }
+  }, 2000);
 }
 
 const getWeightData = () => storage.get('weightData', []);
