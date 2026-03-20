@@ -29,7 +29,7 @@ body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   background: var(--bg-color);
   color: var(--text-color);
-  overflow: hidden;
+  overflow: auto;
 }
 
 body {
@@ -51,7 +51,7 @@ body {
   max-width: 428px;
   background: var(--bg-color);
   border-radius: 0;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
   box-shadow: none;
