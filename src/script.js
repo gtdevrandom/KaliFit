@@ -540,10 +540,36 @@ function applyTheme(theme, secondaryColor) {
   }
   
   updateManifestTheme(primaryColor, t.bg);
+  updateNavBarImages(theme);
   
   updateStatsScreen();
   displaySessionHistory();
   displayFoodsList();
+}
+
+function updateNavBarImages(theme) {
+  const navItems = document.querySelectorAll('.nav-item');
+  const imageFolder = theme === 'dark' ? './public/images/nav-bar-white' : './public/images/nav-bar';
+  
+  const iconMap = {
+    'screen-accueil': 'home',
+    'screen-nutrition': 'food',
+    'screen-sport': 'sport',
+    'screen-stats': 'stats',
+    'screen-profil': 'profil',
+    'screen-settings': 'params'
+  };
+  
+  navItems.forEach(item => {
+    const screenId = item.getAttribute('data-screen');
+    const iconName = iconMap[screenId];
+    const img = item.querySelector('img.nav-icon');
+    
+    if (img && iconName) {
+      const suffix = theme === 'dark' ? '-white' : '';
+      img.src = `${imageFolder}/${iconName}${suffix}.webp`;
+    }
+  });
 }
 
 function updateManifestTheme(themeColor, bgColor) {

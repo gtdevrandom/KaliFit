@@ -1,6 +1,8 @@
 /* ====== RESET & VARIABLES ====== */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -18,7 +20,8 @@
 
 /* ====== BASE STYLES ====== */
 
-html, body {
+html,
+body {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -34,6 +37,10 @@ body {
   justify-content: center;
   align-items: stretch;
   min-height: 100vh;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 /* ====== APP LAYOUT ====== */
@@ -61,7 +68,7 @@ body {
   gap: 12px;
   padding: 16px 10px;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0,201,177,0.2);
+  box-shadow: 0 2px 8px rgba(0, 201, 177, 0.2);
   position: relative;
   padding-top: max(16px, env(safe-area-inset-top));
 }
@@ -73,6 +80,12 @@ body {
   object-fit: contain;
   position: absolute;
   left: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;   
 }
 
 .app-header h1 {
@@ -105,7 +118,7 @@ body {
   background: var(--card-bg);
   border-radius: 12px;
   padding: 12px 14px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -380,7 +393,7 @@ body {
   background: var(--card-bg);
   border-radius: 12px;
   padding: 12px 14px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -413,10 +426,12 @@ body {
     opacity: 0.5;
     transform: scale(0.98);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.01);
   }
+
   100% {
     opacity: 0.9;
     transform: scale(1);
@@ -574,7 +589,7 @@ body {
   padding: 8px 0 6px;
   padding-bottom: max(6px, env(safe-area-inset-bottom));
   z-index: 10;
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .nav-item {
@@ -590,6 +605,22 @@ body {
 .nav-icon {
   font-size: 22px;
   line-height: 1;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+  opacity: 0.6;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.nav-item.active .nav-icon {
+  opacity: 1;
 }
 
 .nav-label {
@@ -650,6 +681,7 @@ body {
   from {
     transform: translateY(100%);
   }
+
   to {
     transform: translateY(0);
   }
@@ -1000,4 +1032,3 @@ body {
 .mt-12 {
   margin-top: 12px;
 }
-
