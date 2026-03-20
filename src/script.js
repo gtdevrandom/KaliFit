@@ -1156,3 +1156,81 @@ function calculateSessionQuality() {
 
   return Math.min(score, 10);
 }
+
+// ============================================
+// EXPORT & IMPORT FUNCTIONS
+// ============================================
+
+function exportUserData() {
+  // Collecte toutes les données utilisateur
+  const userData = {
+    version: '1.0',
+    exportDate: new Date().toISOString(),
+    data: {
+      settings: getSettings(),
+      goals: getGoals(),
+      weightData: getWeightData(),
+      sleepData: getSleepData(),
+      sessionsData: getSessionsData(),
+      nutritionData: getNutritionData()
+    }
+  };
+
+  // Convertit les données en JSON
+  const jsonString = JSON.stringify(userData, null, 2);
+  
+  // Crée un blob et le télécharge
+  const blob = new Blob([jsonString], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `KaliFit_export_${new Date().toISOString().split('T')[0]}.json`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+  
+  alert('✅ Vos données ont été exportées avec succès !');
+}
+
+function importUserData() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  
+  input.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const userData = JSON.parse(e.target.result);
+        
+        // Validation du format
+        if (!userData.data) {
+          throw new Error('Format de fichier invalide');
+        }
+        
+        // Confirmez avant d'importer
+        if (confirm('⚠️ Cela va remplacer vos données actuelles. Êtes-vous sûr ?')) {
+          // Importe les données
+          if (userData.data.settings) storage.set('settings', userData.data.settings);
+          if (userData.data.goals) storage.set('goals', userData.data.goals);
+          if (userData.data.weightData) storage.set('weightData', userData.data.weightData);
+          if (userData.data.sleepData) storage.set('sleepData', userData.data.sleepData);
+          if (userData.data.sessionsData) storage.set('sessionsData', userData.data.sessionsData);
+          if (userData.data.nutritionData) storage.set('nutritionData', userData.data.nutritionData);
+          
+          alert('✅ Vos données ont été importées avec succès ! La page va se recharger.');
+          setTimeout(() => window.location.reload(), 1000);
+        }
+      } catch (error) {
+        alert('❌ Erreur lors de l\'importation : ' + error.message);
+      }
+    };
+    reader.readAsText(file);
+  });
+  
+  input.click();
+}

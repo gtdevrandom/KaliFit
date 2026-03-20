@@ -29,7 +29,7 @@
   <body>
     <main class="app">
       <header class="app-header">
-        <img src="./public/images/logo/logo-192.webp" alt="KaliFit" class="logo-img" fetchpriority="high" loading="eager">
+        <img src="./public/images/logo/logo-192.webp" alt="KaliFit" class="logo-img" loading="eager">
         <h1>KaliFit</h1>
       </header>
 
@@ -324,9 +324,9 @@
           <div class="card-title">Aliments & Allergies</div>
           <div class="form-group form-group-spacing">
             <label>Aliments non aimés / Allergies :</label>
-            <textarea id="settings-allergies" placeholder="Ex: Cacahuètes, Lactose, Champignons..." style="min-height: 80px; padding: 8px; border-radius: 4px; font-family: inherit; font-size: inherit;"></textarea>
+            <textarea id="settings-allergies" placeholder="Ex: Cacahuètes, Lactose, Champignons..." class="settings-allergies"></textarea>
           </div>
-          <p style="font-size: 12px; color: #999; margin-top: 8px;">Énumérez les aliments séparés par des virgules. Ces informations seront utilisées pour personnaliser les conseils de repas.</p>
+          <p class="about-help-text">Énumérez les aliments séparés par des virgules. Ces informations seront utilisées pour personnaliser les conseils de repas.</p>
           <button class="btn-teal" onclick="saveSettings()">Enregistrer</button>
         </div>
 
@@ -336,7 +336,10 @@
             <p><strong>KaliFit - Fitness & Nutrition</strong></p>
             <p class="about-copyright">Copyright © 2026 gtdevrandom</p>
             <p class="about-license">MIT License - Permission is hereby granted, free of charge, to any person obtaining a copy of this software.</p>
+            <a href="https://github.com/gtdevrandom/KaliFit" target="_blank" rel="noopener noreferrer" class="github-link">📦 GitHub Repository</a>
           </div>
+          <button class="btn-teal mt-12" onclick="exportUserData()">💾 Exporter mes données</button>
+          <button class="btn-teal mt-12" onclick="importUserData()">📥 Importer mes données</button>
           <button class="btn-teal mt-12" onclick="clearSiteCache()">🗑️ Vider le cache</button>
         </div>
 
