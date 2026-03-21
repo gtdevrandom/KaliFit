@@ -70,7 +70,7 @@ async function clearSiteCache() {
   sessionStorage.clear();
 
   alert("Cache vidé !");
-
+  window.location.reload();
   setTimeout(() => {
     if (window.refreshAISuggestions) {
       window.refreshAISuggestions();
