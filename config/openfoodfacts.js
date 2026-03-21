@@ -69,14 +69,22 @@ async function searchFoods() {
   }
 }
 
-function displayFoodSearchResults() {
+function displayFoodSearchResults(isFromAI = false) {
   const resultsDiv = document.getElementById('food-search-results');
-  resultsDiv.innerHTML = foodSearchResults.slice(0, 10).map((product, idx) => `
+  
+  let html = '';
+  if (isFromAI) {
+    html += '<div style="text-align:center;padding:8px;font-size:12px;opacity:0.6;color:#ffa500;">Résultats générés par IA</div>';
+  }
+  
+  html += foodSearchResults.slice(0, 10).map((product, idx) => `
     <div class="food-search-item" data-index="${idx}">
       <div style="font-weight:600;margin-bottom:4px;">${product.product_name || 'Produit sans nom'}</div>
       <div style="font-size:12px;opacity:0.7;">Marque: ${product.brands || 'Non spécifiée'}</div>
     </div>
   `).join('');
+  
+  resultsDiv.innerHTML = html;
   
   document.querySelectorAll('.food-search-item').forEach(item => {
     const idx = parseInt(item.getAttribute('data-index'));
@@ -166,8 +174,7 @@ Ne fais pas d'autre formatage, juste la liste.`;
       });
 
       if (foodSearchResults.length > 0) {
-        displayFoodSearchResults();
-        resultsDiv.innerHTML = `<div style="text-align:center;padding:8px;font-size:12px;opacity:0.6;color:#ffa500;">Résultats générés par IA</div>` + resultsDiv.innerHTML;
+        displayFoodSearchResults(true);
       } else {
         resultsDiv.innerHTML = '<div style="text-align:center;padding:20px;opacity:0.6;color:var(--text-color);">Impossible d\'obtenir des suggestions</div>';
       }
