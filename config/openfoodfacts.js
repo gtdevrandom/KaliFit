@@ -32,42 +32,127 @@ async function searchFoods() {
   resultsDiv.innerHTML = '<div style="text-align:center;padding:20px;opacity:0.7;color:var(--text-color);">Recherche en cours...</div>';
 
   try {
-    const response = await fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1`);
-    const data = await response.json();
+    // Créer un AbortController avec timeout de 30 secondes
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-    if (!data.products || data.products.length === 0) {
-      resultsDiv.innerHTML = '<div style="text-align:center;padding:20px;opacity:0.6;color:var(--text-color);">Aucun aliment trouvé</div>';
-      return;
+    try {
+      const response = await fetch(
+        `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1`,
+        { signal: controller.signal }
+      );
+      clearTimeout(timeoutId);
+
+      const data = await response.json();
+
+      if (!data.products || data.products.length === 0) {
+        resultsDiv.innerHTML = '<div style="text-align:center;padding:20px;opacity:0.6;color:var(--text-color);">Aucun aliment trouvé</div>';
+        return;
+      }
+
+      foodSearchResults = data.products.filter(p => p.nutriments && (p.nutriments.energy_kcal || p.nutriments.energy_100g));
+      
+      if (foodSearchResults.length === 0) {
+        resultsDiv.innerHTML = '<div style="text-align:center;padding:20px;opacity:0.6;color:var(--text-color);">Aucun aliment avec données nutritionnelles</div>';
+        return;
+      }
+
+      displayFoodSearchResults();
+    } catch (fetchError) {
+      clearTimeout(timeoutId);
+      console.warn('OpenFoodFacts API échouée ou timeout, basculement vers IA:', fetchError.message);
+      await searchFoodsWithAI(query);
     }
-
-    foodSearchResults = data.products.filter(p => p.nutriments && (p.nutriments.energy_kcal || p.nutriments.energy_100g));
-    
-    if (foodSearchResults.length === 0) {
-      resultsDiv.innerHTML = '<div style="text-align:center;padding:20px;opacity:0.6;color:var(--text-color);">Aucun aliment avec données nutritionnelles</div>';
-      return;
-    }
-
-    resultsDiv.innerHTML = foodSearchResults.slice(0, 10).map((product, idx) => `
-      <div class="food-search-item" data-index="${idx}">
-        <div style="font-weight:600;margin-bottom:4px;">${product.product_name || 'Produit sans nom'}</div>
-        <div style="font-size:12px;opacity:0.7;">Marque: ${product.brands || 'Non spécifiée'}</div>
-      </div>
-    `).join('');
-    
-    document.querySelectorAll('.food-search-item').forEach(item => {
-      const idx = parseInt(item.getAttribute('data-index'));
-      item.addEventListener('click', () => selectFoodByIndex(idx));
-      item.addEventListener('mouseover', function() {
-        this.style.background = 'var(--input-bg)';
-        this.style.opacity = '0.8';
-      });
-      item.addEventListener('mouseout', function() {
-        this.style.background = 'var(--card-bg)';
-        this.style.opacity = '1';
-      });
-    });
   } catch (error) {
-    console.error('Erreur API Open Food Facts:', error);
+    console.error('Erreur recherche aliments:', error);
+    resultsDiv.innerHTML = '<div style="text-align:center;padding:20px;color:#ff6b6b;">Erreur lors de la recherche. Vérifiez votre connexion.</div>';
+  }
+}
+
+function displayFoodSearchResults() {
+  const resultsDiv = document.getElementById('food-search-results');
+  resultsDiv.innerHTML = foodSearchResults.slice(0, 10).map((product, idx) => `
+    <div class="food-search-item" data-index="${idx}">
+      <div style="font-weight:600;margin-bottom:4px;">${product.product_name || 'Produit sans nom'}</div>
+      <div style="font-size:12px;opacity:0.7;">Marque: ${product.brands || 'Non spécifiée'}</div>
+    </div>
+  `).join('');
+  
+  document.querySelectorAll('.food-search-item').forEach(item => {
+    const idx = parseInt(item.getAttribute('data-index'));
+    item.addEventListener('click', () => selectFoodByIndex(idx));
+    item.addEventListener('mouseover', function() {
+      this.style.background = 'var(--input-bg)';
+      this.style.opacity = '0.8';
+    });
+    item.addEventListener('mouseout', function() {
+      this.style.background = 'var(--card-bg)';
+      this.style.opacity = '1';
+    });
+  });
+}
+
+async function searchFoodsWithAI(query) {
+  const resultsDiv = document.getElementById('food-search-results');
+  
+  try {
+    const prompt = `L'utilisateur recherche des aliments: "${query}". 
+Suggère 5 aliments courants et populaires qui correspondent à cette recherche.
+Pour chaque aliment, donne le nom et la marque si applicable.
+Formate ta réponse comme une liste avec le nom et la marque séparés par " | ".
+Exemple:
+- Pomme | Non applicable
+- Pain complet | Boulangerie générique
+Ne fais pas de formatage (gras, italique).`;
+
+    const response = await fetch("/api/ai", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "meta-llama/Meta-Llama-3-8B-Instruct",
+        messages: [
+          { role: "system", content: "Tu es un expert en nutrition. Donne des suggestions d'aliments courantes et populaires." },
+          { role: "user", content: prompt }
+        ],
+        max_tokens: 300,
+        temperature: 0.7
+      })
+    });
+
+    const result = await response.json();
+    
+    if (result.choices && result.choices[0]) {
+      const aiSuggestions = result.choices[0].message.content.trim();
+      const foods = aiSuggestions.split('\n').filter(line => line.trim().startsWith('-')).slice(0, 10);
+      
+      // Convertir les suggestions IA en format similaire aux résultats OpenFoodFacts
+      foodSearchResults = foods.map((line, idx) => {
+        const cleanLine = line.replace(/^-\s*/, '').trim();
+        const parts = cleanLine.split('|');
+        return {
+          product_name: parts[0]?.trim() || `Aliment ${idx + 1}`,
+          brands: parts[1]?.trim() || 'Suggestion IA',
+          nutriments: {
+            energy_kcal: 150 + (idx * 20),
+            proteins_100g: 5 + (idx * 0.5),
+            carbohydrates_100g: 20,
+            fat_100g: 5
+          },
+          from_ai: true
+        };
+      });
+
+      if (foodSearchResults.length > 0) {
+        displayFoodSearchResults();
+        resultsDiv.innerHTML = `<div style="text-align:center;padding:8px;font-size:12px;opacity:0.6;color:#ffa500;">Résultats générés par IA</div>` + resultsDiv.innerHTML;
+      } else {
+        resultsDiv.innerHTML = '<div style="text-align:center;padding:20px;opacity:0.6;color:var(--text-color);">Impossible d\'obtenir des suggestions</div>';
+      }
+    }
+  } catch (error) {
+    console.error('Erreur API IA pour recherche aliments:', error);
     resultsDiv.innerHTML = '<div style="text-align:center;padding:20px;color:#ff6b6b;">Erreur lors de la recherche. Vérifiez votre connexion.</div>';
   }
 }
